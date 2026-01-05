@@ -10,7 +10,6 @@ export class CommentDecorationManager {
       backgroundColor: "rgba(255, 236, 150, 0.95)",
       border: "1px solid rgba(180, 150, 60, 0.95)",
       fontStyle: "normal",
-      textDecoration: "none; padding: 0 6px;",
     },
   });
 
@@ -18,11 +17,6 @@ export class CommentDecorationManager {
 
   update(editor?: vscode.TextEditor): void {
     if (!editor) {
-      return;
-    }
-
-    if (!DiffEditorDetector.isDiffEditor(editor)) {
-      editor.setDecorations(this.decorationType, []);
       return;
     }
 
@@ -37,7 +31,6 @@ export class CommentDecorationManager {
     }
 
     const decorations: vscode.DecorationOptions[] = [];
-
     for (const [lineNumber, texts] of byLine) {
       const lineIndex = lineNumber - 1;
       if (lineIndex < 0 || lineIndex >= editor.document.lineCount) {

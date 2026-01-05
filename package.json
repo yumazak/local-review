@@ -3,6 +3,11 @@
   "displayName": "Diff Comment",
   "description": "Add comments to diff editor lines and copy to clipboard",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yumazak/local-review"
+  },
   "engines": {
     "vscode": "^1.107.0"
   },
@@ -10,6 +15,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onStartupFinished",
     "onCommand:diff-comment.addComment",
     "onCommand:diff-comment.submitComments"
   ],
@@ -33,6 +39,12 @@
         "key": "ctrl+shift+c",
         "mac": "cmd+shift+c",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "diff-comment.submitComments",
+        "key": "ctrl+shift+enter",
+        "mac": "cmd+shift+enter",
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
@@ -55,6 +67,8 @@
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
+    "package:install": "npm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
+    "package:vsix": "vsce package",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",

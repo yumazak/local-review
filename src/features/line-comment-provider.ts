@@ -21,10 +21,6 @@ export class LineCommentProvider {
       vscode.window.showWarningMessage('アクティブなエディタが見つかりません');
       return;
     }
-    if (!lineInfo.isDiffEditor) {
-      vscode.window.showWarningMessage('diff エディタで実行してください');
-      return;
-    }
 
     // 2. コメント入力
     const commentInput = await this.inputHandler.showCommentInput();
@@ -45,6 +41,53 @@ export class LineCommentProvider {
     // 4. 内部に保持して表示を更新
     this.store.add(comment);
     this.decorationManager.update(vscode.window.activeTextEditor);
+
+    vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
+  }
+
+  public async addCommentAtLine(lineNumber: number, fileName: string): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      vscode.window.showWarningMessage('アクティブなエディタが見つかりません');
+      return;
+    }
+    if (!DiffEditorDetector.isDiffEditor(editor)) {
+      vscode.window.showWarningMessage('diff エディタで実行してください');
+      return;
+    }
+
+    const currentFileName = DiffEditorDetector.getEditorFileName(editor);
+    if (currentFileName !== fileName) {
+      vscode.window.showWarningMessage('アクティブな diff が対象と一致しません');
+      return;
+    }
+
+    const lineIndex = lineNumber - 1;
+    if (lineIndex < 0 || lineIndex >= editor.document.lineCount) {
+      vscode.window.showWarningMessage('指定した行が見つかりません');
+      return;
+    }
+
+    const position = new vscode.Position(lineIndex, 0);
+    editor.selection = new vscode.Selection(position, position);
+    editor.revealRange(new vscode.Range(position, position));
+
+    const commentInput = await this.inputHandler.showCommentInput();
+    if (!commentInput) {
+      return;
+    }
+
+    const comment: Comment = {
+      fileName,
+      lineNumber,
+      text: commentInput.text,
+      timestamp: commentInput.timestamp
+    };
+
+    const formattedComment = CommentFormatter.formatStandard(comment);
+
+    this.store.add(comment);
+    this.decorationManager.update(editor);
 
     vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
   }

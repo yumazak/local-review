@@ -43,6 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
+	const addCommentAtLineCommand = vscode.commands.registerCommand(
+		'diff-comment.addCommentAtLine',
+		async (lineNumber: number, fileName: string) => {
+			try {
+				await commentProvider.addCommentAtLine(lineNumber, fileName);
+			} catch (error) {
+				vscode.window.showErrorMessage(`コメントの追加に失敗しました: ${error}`);
+			}
+		}
+	);
 	const editorChangeSubscription = vscode.window.onDidChangeActiveTextEditor((editor) => {
 		decorationManager.update(editor);
 	});
@@ -50,6 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		addCommentCommand,
 		submitCommentsCommand,
+		addCommentAtLineCommand,
 		editorChangeSubscription,
 		decorationManager
 	);

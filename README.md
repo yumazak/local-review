@@ -1,38 +1,39 @@
 # Diff Comment
 
-Add comments for lines in a VS Code diff editor, show them inline, and copy them all at once.
+VS Code 上で行コメントを追加し、行末に表示してまとめてコピーできます。
 
-## Features
+## 機能
 
-- Captures file name and 1-based line number from the active editor
-- Prompts for a comment using the native input box
-- Shows a faint inline note in the diff editor
-- Copies all stored comments to the clipboard in one batch
+- アクティブエディタのファイル名と 1 始まりの行番号を記録
+- コメント入力は標準の入力ボックス
+- 行末にハイライト付きでコメントを表示
+- 保存したコメントを一括でクリップボードにコピー
 
-## Usage
+## 使い方
 
-1. Open a diff view and place the cursor on the line you want to comment on.
-2. Run the command:
-   - Command Palette: `Diff Comment: Add Comment to Current Line`
-   - Shortcut: `Ctrl+Shift+C` (macOS: `Cmd+Shift+C`)
-3. Enter your comment and press Enter.
-4. The comment appears faintly at the end of the line.
-5. When you are ready to copy all comments, run:
-   - Command Palette: `Diff Comment: Copy All Comments`
-   - Editor context menu: `Copy All Comments`
-6. After copying, the stored comments are cleared.
+1. ファイルまたは diff ビューを開き、コメントしたい行にカーソルを置く
+2. コマンドを実行:
+   - コマンドパレット: `Diff Comment: Add Comment to Current Line`
+   - ショートカット: `Ctrl+Shift+C` (macOS: `Cmd+Shift+C`)
+3. コメントを入力して Enter
+4. コメントが行末に表示される
+5. まとめてコピーしたいとき:
+   - コマンドパレット: `Diff Comment: Copy All Comments`
+   - エディタのコンテキストメニュー: `Copy All Comments`
+   - ショートカット: `Ctrl+Shift+Enter` (macOS: `Cmd+Shift+Enter`)
+6. コピー後、保存済みコメントはクリアされる
 
-## Output Format
+## 出力フォーマット
 
 ```
 src/extension.ts:42 check the initialization
 ```
 
-## Requirements
+## 要件
 
-- Visual Studio Code 1.107.0 or later
+- Visual Studio Code 1.107.0 以上
 
-## Development
+## 開発
 
 ```bash
 npm run compile
