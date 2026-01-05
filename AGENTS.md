@@ -21,10 +21,10 @@
 
 ## 実装の要点
 
-- コメント表示: `src/features/comment-decoration-manager.ts`
-- コメント追加/送信: `src/features/line-comment-provider.ts`
+- コメント表示: `src/features/comment-decoration/utils/comment-decoration-manager.ts`
+- コメント追加/送信: `src/features/line-comment/utils/line-comment-provider.ts`
 - 拡張エントリ: `src/extension.ts`
-- コメント保存: `src/features/comment-store.ts`
+- コメント保存: `src/features/comment-store/utils/comment-store.ts`
 
 ## 既存UIの整理
 

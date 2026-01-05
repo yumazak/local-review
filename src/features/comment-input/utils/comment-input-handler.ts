@@ -1,4 +1,4 @@
-import { showCommentInput as showQuickInput } from '../ui/quick-input-builder';
+import { showCommentInput as showQuickInput } from '../../../ui/quick-input-builder';
 
 export interface CommentInput {
   text: string;

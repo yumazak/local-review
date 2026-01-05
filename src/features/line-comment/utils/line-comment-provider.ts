@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import { getCurrentLineInfo, getEditorFileName, isDiffEditor } from './diff-editor-detector';
-import { CommentInput, showCommentInput } from './comment-input-handler';
-import { copyToClipboard } from './clipboard-manager';
-import { Comment, formatStandardComment } from '../models/comment';
-import { CommentStore } from './comment-store';
-import { CommentDecorationManager } from './comment-decoration-manager';
+import { getCurrentLineInfo, getEditorFileName, isDiffEditor } from '../../diff-editor/utils/diff-editor-detector';
+import { CommentInput, showCommentInput } from '../../comment-input/utils/comment-input-handler';
+import { copyToClipboard } from '../../clipboard/utils/clipboard-manager';
+import { Comment, formatStandardComment } from '../../../models/comment';
+import { CommentStore } from '../../comment-store/utils/comment-store';
+import { CommentDecorationManager } from '../../comment-decoration/utils/comment-decoration-manager';
 
 export interface LineCommentProviderDependencies {
   showCommentInput: () => Promise<CommentInput | undefined>;

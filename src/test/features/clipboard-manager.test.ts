@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { copyToClipboard, readFromClipboard } from '../../features/clipboard-manager';
+import { copyToClipboard, readFromClipboard } from '../../features/clipboard/utils/clipboard-manager';
 
 suite('ClipboardManager', () => {
   test('copyToClipboard writes text that can be read back', async () => {

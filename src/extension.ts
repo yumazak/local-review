@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { createLineCommentProvider } from './features/line-comment-provider';
-import { showCommentInput } from './features/comment-input-handler';
-import { copyToClipboard } from './features/clipboard-manager';
-import { createCommentStore } from './features/comment-store';
-import { createCommentDecorationManager } from './features/comment-decoration-manager';
+import { createLineCommentProvider } from './features/line-comment/utils/line-comment-provider';
+import { showCommentInput } from './features/comment-input/utils/comment-input-handler';
+import { copyToClipboard } from './features/clipboard/utils/clipboard-manager';
+import { createCommentStore } from './features/comment-store/utils/comment-store';
+import { createCommentDecorationManager } from './features/comment-decoration/utils/comment-decoration-manager';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Diff Comment extension is now active');
