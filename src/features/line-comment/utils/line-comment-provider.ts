@@ -53,6 +53,11 @@ export const createLineCommentProvider = (
     store.add(comment);
     decorationManager.update(vscode.window.activeTextEditor);
 
+    const copied = await copyToClipboard(formattedComment);
+    if (!copied) {
+      vscode.window.showErrorMessage('クリップボードへのコピーに失敗しました');
+    }
+
     vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
   };
 
@@ -102,6 +107,11 @@ export const createLineCommentProvider = (
 
     store.add(comment);
     decorationManager.update(editor);
+
+    const copied = await copyToClipboard(formattedComment);
+    if (!copied) {
+      vscode.window.showErrorMessage('クリップボードへのコピーに失敗しました');
+    }
 
     vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
   };

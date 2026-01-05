@@ -3,12 +3,13 @@ import * as vscode from 'vscode';
 import { createLineCommentProvider } from '../features/line-comment/utils/line-comment-provider';
 import { createCommentStore } from '../features/comment-store/utils/comment-store';
 import { CommentDecorationManager } from '../features/comment-decoration/utils/comment-decoration-manager';
+import { formatStandardComment } from '../utils/comment-format';
 
 suite('Line Comment Flow', () => {
   test('add comment then submit copies and clears', async () => {
     const store = createCommentStore();
     const updates: vscode.TextEditor[] = [];
-    let copiedText = '';
+    const copiedTexts: string[] = [];
 
     const decorationManager: CommentDecorationManager = {
       update: (editor?: vscode.TextEditor) => {
@@ -25,7 +26,7 @@ suite('Line Comment Flow', () => {
         timestamp: new Date(0)
       }),
       copyToClipboard: async (text: string) => {
-        copiedText = text;
+        copiedTexts.push(text);
         return true;
       },
       store,
@@ -48,11 +49,14 @@ suite('Line Comment Flow', () => {
     assert.strictEqual(comments[0].text, 'needs check');
     assert.strictEqual(comments[0].lineNumber, 1);
     assert.strictEqual(comments[0].fileName, editor.document.fileName);
+    assert.strictEqual(copiedTexts.length, 1);
+    assert.strictEqual(copiedTexts[0], formatStandardComment(comments[0]));
     const expectedCopy = store.formatAll();
 
     await provider.submitComments();
 
-    assert.strictEqual(copiedText, expectedCopy);
+    assert.strictEqual(copiedTexts.length, 2);
+    assert.strictEqual(copiedTexts[1], expectedCopy);
     assert.strictEqual(store.hasAny(), false);
     assert.strictEqual(updates.length, 2);
   });
