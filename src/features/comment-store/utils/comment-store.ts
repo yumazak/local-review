@@ -1,4 +1,5 @@
-import { Comment, formatStandardComment } from '../../../models/comment';
+import { Comment } from '../../../types/comment';
+import { formatStandardComment } from '../../../utils/comment-format';
 
 export interface CommentStore {
   add: (comment: Comment) => void;

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { createCommentStore } from '../../features/comment-store/utils/comment-store';
+import { createCommentStore } from '../comment-store';
 
 suite('CommentStore', () => {
   test('formatAll joins comments by newline', () => {

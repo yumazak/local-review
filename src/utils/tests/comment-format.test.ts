@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { formatStandardComment } from '../../models/comment';
+import { formatStandardComment } from '../comment-format';
 
 suite('CommentFormatter', () => {
   test('formatStandard formats file, line, and text', () => {

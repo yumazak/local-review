@@ -69,6 +69,6 @@ export const createCommentDecorationManager = (
 
   return {
     update,
-    dispose
+    dispose,
   };
 };
