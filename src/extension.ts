@@ -1,24 +1,22 @@
 import * as vscode from 'vscode';
-import { LineCommentProvider } from './features/line-comment-provider';
-import { CommentInputHandler } from './features/comment-input-handler';
-import { ClipboardManager } from './features/clipboard-manager';
-import { CommentStore } from './features/comment-store';
-import { CommentDecorationManager } from './features/comment-decoration-manager';
+import { createLineCommentProvider } from './features/line-comment-provider';
+import { showCommentInput } from './features/comment-input-handler';
+import { copyToClipboard } from './features/clipboard-manager';
+import { createCommentStore } from './features/comment-store';
+import { createCommentDecorationManager } from './features/comment-decoration-manager';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Diff Comment extension is now active');
 
 	// 依存関係の構築
-	const clipboardManager = new ClipboardManager();
-	const inputHandler = new CommentInputHandler();
-	const store = new CommentStore();
-	const decorationManager = new CommentDecorationManager(store);
-	const commentProvider = new LineCommentProvider(
-		inputHandler,
-		clipboardManager,
+	const store = createCommentStore();
+	const decorationManager = createCommentDecorationManager(store);
+	const commentProvider = createLineCommentProvider({
+		showCommentInput,
+		copyToClipboard,
 		store,
 		decorationManager
-	);
+	});
 
 	// コマンドの登録
 	const addCommentCommand = vscode.commands.registerCommand(

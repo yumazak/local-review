@@ -1,29 +1,47 @@
-import { Comment, CommentFormatter } from '../models/comment';
+import { Comment, formatStandardComment } from '../models/comment';
 
-export class CommentStore {
-  private comments: Comment[] = [];
-
-  add(comment: Comment): void {
-    this.comments.push(comment);
-  }
-
-  list(): Comment[] {
-    return [...this.comments];
-  }
-
-  listForFile(fileName: string): Comment[] {
-    return this.comments.filter((comment) => comment.fileName === fileName);
-  }
-
-  formatAll(): string {
-    return this.comments.map((comment) => CommentFormatter.formatStandard(comment)).join('\n');
-  }
-
-  clear(): void {
-    this.comments = [];
-  }
-
-  hasAny(): boolean {
-    return this.comments.length > 0;
-  }
+export interface CommentStore {
+  add: (comment: Comment) => void;
+  list: () => Comment[];
+  listForFile: (fileName: string) => Comment[];
+  formatAll: () => string;
+  clear: () => void;
+  hasAny: () => boolean;
 }
+
+export const createCommentStore = (): CommentStore => {
+  let comments: Comment[] = [];
+
+  const add = (comment: Comment): void => {
+    comments.push(comment);
+  };
+
+  const list = (): Comment[] => {
+    return [...comments];
+  };
+
+  const listForFile = (fileName: string): Comment[] => {
+    return comments.filter((comment) => comment.fileName === fileName);
+  };
+
+  const formatAll = (): string => {
+    return comments.map((comment) => formatStandardComment(comment)).join('\n');
+  };
+
+  const clear = (): void => {
+    comments = [];
+  };
+
+  const hasAny = (): boolean => {
+    return comments.length > 0;
+  };
+
+  return {
+    add,
+    list,
+    listForFile,
+    formatAll,
+    clear,
+    hasAny
+  };
+};

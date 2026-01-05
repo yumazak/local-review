@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { DiffEditorDetector } from '../../features/diff-editor-detector';
+import { getCurrentLineInfo } from '../../features/diff-editor-detector';
 
 suite('DiffEditorDetector', () => {
   test('getCurrentLineInfo returns line info for active editor', async () => {
@@ -14,7 +14,7 @@ suite('DiffEditorDetector', () => {
       new vscode.Position(1, 0)
     );
 
-    const info = DiffEditorDetector.getCurrentLineInfo();
+    const info = getCurrentLineInfo();
 
     assert.ok(info);
     assert.strictEqual(info?.lineNumber, 2);

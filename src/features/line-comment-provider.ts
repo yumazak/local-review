@@ -1,29 +1,39 @@
 import * as vscode from 'vscode';
-import { DiffEditorDetector } from './diff-editor-detector';
-import { CommentInputHandler } from './comment-input-handler';
-import { ClipboardManager } from './clipboard-manager';
-import { Comment, CommentFormatter } from '../models/comment';
+import { getCurrentLineInfo, getEditorFileName, isDiffEditor } from './diff-editor-detector';
+import { CommentInput, showCommentInput } from './comment-input-handler';
+import { copyToClipboard } from './clipboard-manager';
+import { Comment, formatStandardComment } from '../models/comment';
 import { CommentStore } from './comment-store';
 import { CommentDecorationManager } from './comment-decoration-manager';
 
-export class LineCommentProvider {
-  constructor(
-    private inputHandler: CommentInputHandler,
-    private clipboardManager: ClipboardManager,
-    private store: CommentStore,
-    private decorationManager: CommentDecorationManager
-  ) {}
+export interface LineCommentProviderDependencies {
+  showCommentInput: () => Promise<CommentInput | undefined>;
+  copyToClipboard: (text: string) => Promise<boolean>;
+  store: CommentStore;
+  decorationManager: CommentDecorationManager;
+}
 
-  public async addComment(): Promise<void> {
+export interface LineCommentProvider {
+  addComment: () => Promise<void>;
+  addCommentAtLine: (lineNumber: number, fileName: string) => Promise<void>;
+  submitComments: () => Promise<void>;
+}
+
+export const createLineCommentProvider = (
+  dependencies: LineCommentProviderDependencies
+): LineCommentProvider => {
+  const { showCommentInput, copyToClipboard, store, decorationManager } = dependencies;
+
+  const addComment = async (): Promise<void> => {
     // 1. エディタ情報取得
-    const lineInfo = DiffEditorDetector.getCurrentLineInfo();
+    const lineInfo = getCurrentLineInfo();
     if (!lineInfo) {
       vscode.window.showWarningMessage('アクティブなエディタが見つかりません');
       return;
     }
 
     // 2. コメント入力
-    const commentInput = await this.inputHandler.showCommentInput();
+    const commentInput = await showCommentInput();
     if (!commentInput) {
       return; // ユーザーがキャンセル
     }
@@ -36,27 +46,30 @@ export class LineCommentProvider {
       timestamp: commentInput.timestamp
     };
 
-    const formattedComment = CommentFormatter.formatStandard(comment);
+    const formattedComment = formatStandardComment(comment);
 
     // 4. 内部に保持して表示を更新
-    this.store.add(comment);
-    this.decorationManager.update(vscode.window.activeTextEditor);
+    store.add(comment);
+    decorationManager.update(vscode.window.activeTextEditor);
 
     vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
-  }
+  };
 
-  public async addCommentAtLine(lineNumber: number, fileName: string): Promise<void> {
+  const addCommentAtLine = async (
+    lineNumber: number,
+    fileName: string
+  ): Promise<void> => {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
       vscode.window.showWarningMessage('アクティブなエディタが見つかりません');
       return;
     }
-    if (!DiffEditorDetector.isDiffEditor(editor)) {
+    if (!isDiffEditor(editor)) {
       vscode.window.showWarningMessage('diff エディタで実行してください');
       return;
     }
 
-    const currentFileName = DiffEditorDetector.getEditorFileName(editor);
+    const currentFileName = getEditorFileName(editor);
     if (currentFileName !== fileName) {
       vscode.window.showWarningMessage('アクティブな diff が対象と一致しません');
       return;
@@ -72,7 +85,7 @@ export class LineCommentProvider {
     editor.selection = new vscode.Selection(position, position);
     editor.revealRange(new vscode.Range(position, position));
 
-    const commentInput = await this.inputHandler.showCommentInput();
+    const commentInput = await showCommentInput();
     if (!commentInput) {
       return;
     }
@@ -84,31 +97,37 @@ export class LineCommentProvider {
       timestamp: commentInput.timestamp
     };
 
-    const formattedComment = CommentFormatter.formatStandard(comment);
+    const formattedComment = formatStandardComment(comment);
 
-    this.store.add(comment);
-    this.decorationManager.update(editor);
+    store.add(comment);
+    decorationManager.update(editor);
 
     vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
-  }
+  };
 
-  public async submitComments(): Promise<void> {
-    if (!this.store.hasAny()) {
+  const submitComments = async (): Promise<void> => {
+    if (!store.hasAny()) {
       vscode.window.showWarningMessage('送信するコメントがありません');
       return;
     }
 
-    const formattedComments = this.store.formatAll();
+    const formattedComments = store.formatAll();
 
-    const success = await this.clipboardManager.copyToClipboard(formattedComments);
+    const success = await copyToClipboard(formattedComments);
     if (!success) {
       vscode.window.showErrorMessage('クリップボードへのコピーに失敗しました');
       return;
     }
 
-    this.store.clear();
-    this.decorationManager.update(vscode.window.activeTextEditor);
+    store.clear();
+    decorationManager.update(vscode.window.activeTextEditor);
 
     vscode.window.showInformationMessage('コメントをまとめてコピーしました');
-  }
-}
+  };
+
+  return {
+    addComment,
+    addCommentAtLine,
+    submitComments
+  };
+};

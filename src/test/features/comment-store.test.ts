@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import { CommentStore } from '../../features/comment-store';
+import { createCommentStore } from '../../features/comment-store';
 
 suite('CommentStore', () => {
   test('formatAll joins comments by newline', () => {
-    const store = new CommentStore();
+    const store = createCommentStore();
     store.add({
       fileName: 'src/a.ts',
       lineNumber: 1,

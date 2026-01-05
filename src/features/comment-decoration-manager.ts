@@ -1,9 +1,16 @@
 import * as vscode from "vscode";
 import { CommentStore } from "./comment-store";
-import { DiffEditorDetector } from "./diff-editor-detector";
+import { getEditorFileName } from "./diff-editor-detector";
 
-export class CommentDecorationManager {
-  private decorationType = vscode.window.createTextEditorDecorationType({
+export interface CommentDecorationManager {
+  update: (editor?: vscode.TextEditor) => void;
+  dispose: () => void;
+}
+
+export const createCommentDecorationManager = (
+  store: CommentStore
+): CommentDecorationManager => {
+  const decorationType = vscode.window.createTextEditorDecorationType({
     after: {
       margin: "0 0 0 1.2em",
       color: "#1f1f1f",
@@ -13,15 +20,13 @@ export class CommentDecorationManager {
     },
   });
 
-  constructor(private store: CommentStore) {}
-
-  update(editor?: vscode.TextEditor): void {
+  const update = (editor?: vscode.TextEditor): void => {
     if (!editor) {
       return;
     }
 
-    const fileName = DiffEditorDetector.getEditorFileName(editor);
-    const comments = this.store.listForFile(fileName);
+    const fileName = getEditorFileName(editor);
+    const comments = store.listForFile(fileName);
     const byLine = new Map<number, string[]>();
 
     for (const comment of comments) {
@@ -55,10 +60,15 @@ export class CommentDecorationManager {
       });
     }
 
-    editor.setDecorations(this.decorationType, decorations);
-  }
+    editor.setDecorations(decorationType, decorations);
+  };
 
-  dispose(): void {
-    this.decorationType.dispose();
-  }
-}
+  const dispose = (): void => {
+    decorationType.dispose();
+  };
+
+  return {
+    update,
+    dispose
+  };
+};

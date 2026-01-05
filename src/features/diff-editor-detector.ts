@@ -6,43 +6,41 @@ export interface DiffEditorInfo {
   isDiffEditor: boolean;
 }
 
-export class DiffEditorDetector {
-  static getCurrentLineInfo(): DiffEditorInfo | null {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      return null;
-    }
-
-    const position = editor.selection.active;
-    const lineNumber = position.line + 1; // 0ベースから1ベースに変換
-
-    return {
-      fileName: this.getEditorFileName(editor),
-      lineNumber,
-      isDiffEditor: this.isDiffEditor(editor)
-    };
+export const getCurrentLineInfo = (): DiffEditorInfo | null => {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return null;
   }
 
-  static getEditorFileName(editor: vscode.TextEditor): string {
-    const uri = editor.document.uri;
-    const isDiffScheme = this.isDiffEditor(editor);
+  const position = editor.selection.active;
+  const lineNumber = position.line + 1; // 0ベースから1ベースに変換
 
-    if (isDiffScheme && uri.path) {
-      const fileUri = vscode.Uri.file(uri.path);
-      return vscode.workspace.asRelativePath(fileUri, false);
-    }
+  return {
+    fileName: getEditorFileName(editor),
+    lineNumber,
+    isDiffEditor: isDiffEditor(editor)
+  };
+};
 
-    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
-    if (workspaceFolder) {
-      return vscode.workspace.asRelativePath(uri, false);
-    }
+export const getEditorFileName = (editor: vscode.TextEditor): string => {
+  const uri = editor.document.uri;
+  const isDiffScheme = isDiffEditor(editor);
 
-    return editor.document.fileName;
+  if (isDiffScheme && uri.path) {
+    const fileUri = vscode.Uri.file(uri.path);
+    return vscode.workspace.asRelativePath(fileUri, false);
   }
 
-  static isDiffEditor(editor: vscode.TextEditor): boolean {
-    const scheme = editor.document.uri.scheme;
-    // git や diff スキームの場合は diff エディタ
-    return scheme === 'git' || scheme === 'diff';
+  const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+  if (workspaceFolder) {
+    return vscode.workspace.asRelativePath(uri, false);
   }
-}
+
+  return editor.document.fileName;
+};
+
+export const isDiffEditor = (editor: vscode.TextEditor): boolean => {
+  const scheme = editor.document.uri.scheme;
+  // git や diff スキームの場合は diff エディタ
+  return scheme === 'git' || scheme === 'diff';
+};
