@@ -2,6 +2,23 @@
 // for the documentation about the tasks.json format
 {
 	"version": "2.0.0",
+	"problemMatchers": [
+		{
+			"name": "ts-webpack-watch",
+			"owner": "typescript",
+			"applyTo": "closedDocuments",
+			"fileLocation": [
+				"relative",
+				"${workspaceFolder}"
+			],
+			"pattern": "$ts-webpack",
+			"background": {
+				"activeOnStart": true,
+				"beginsPattern": "webpack .*?(watch|watching|incremental|compile|compiling)",
+				"endsPattern": "webpack .*?(compiled successfully|Compilation complete|compile successful|Finished)"
+			}
+		}
+	],
 	"tasks": [
 		{
 			"type": "npm",
