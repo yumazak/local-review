@@ -7,7 +7,6 @@ suite("CommentFormatter", () => {
       fileName: "src/example-file.ts",
       lineNumber: 12,
       text: "check this",
-      timestamp: new Date(),
     });
 
     assert.strictEqual(formatted, "src/example-file.ts:12 check this");

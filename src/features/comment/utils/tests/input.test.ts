@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { showCommentInput } from "../input";
 
 suite("CommentInputHandler", () => {
-  test("returns trimmed input with timestamp", async () => {
+  test("returns trimmed input", async () => {
     const original = vscode.window.showInputBox;
     (
       vscode.window as unknown as {
@@ -12,14 +12,8 @@ suite("CommentInputHandler", () => {
     ).showInputBox = async () => "  hello  ";
 
     try {
-      const before = Date.now();
       const result = await showCommentInput();
-      const after = Date.now();
-
-      assert.ok(result);
-      assert.strictEqual(result?.text, "hello");
-      assert.ok(result?.timestamp.getTime() >= before);
-      assert.ok(result?.timestamp.getTime() <= after);
+      assert.strictEqual(result, "hello");
     } finally {
       (
         vscode.window as unknown as {

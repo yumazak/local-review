@@ -13,7 +13,7 @@ export const getCurrentLineInfo = (): DiffEditorInfo | null => {
   }
 
   const position = editor.selection.active;
-  const lineNumber = position.line + 1; // 0ベースから1ベースに変換
+  const lineNumber = position.line + 1;
 
   return {
     fileName: getEditorFileName(editor),
@@ -39,8 +39,8 @@ export const getEditorFileName = (editor: vscode.TextEditor): string => {
   return editor.document.fileName;
 };
 
-export const isDiffEditor = (editor: vscode.TextEditor): boolean => {
+const isDiffEditor = (editor: vscode.TextEditor): boolean => {
   const scheme = editor.document.uri.scheme;
-  // git や diff スキームの場合は diff エディタ
+
   return scheme === "git" || scheme === "diff";
 };

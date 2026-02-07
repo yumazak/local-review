@@ -21,10 +21,7 @@ suite("Line Comment Flow", () => {
     };
 
     const provider = createLineCommentProvider({
-      showCommentInput: async () => ({
-        text: "needs check",
-        timestamp: new Date(0),
-      }),
+      showCommentInput: async () => "needs check",
       copyToClipboard: async (text: string) => {
         copiedTexts.push(text);
         return true;

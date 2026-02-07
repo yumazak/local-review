@@ -1,6 +1,41 @@
 import * as vscode from "vscode";
+import { Comment } from "../types/comment";
 import { CommentStore } from "./store";
 import { getEditorFileName } from "../../editor/utils/detector";
+
+const groupCommentsByLine = (comments: Comment[]): Map<number, string[]> => {
+  const byLine = new Map<number, string[]>();
+  for (const comment of comments) {
+    const existing = byLine.get(comment.lineNumber) ?? [];
+    existing.push(comment.text);
+    byLine.set(comment.lineNumber, existing);
+  }
+  return byLine;
+};
+
+const createDecorationOptions = (
+  byLine: Map<number, string[]>,
+  document: vscode.TextDocument,
+): vscode.DecorationOptions[] => {
+  const decorations: vscode.DecorationOptions[] = [];
+  for (const [lineNumber, texts] of byLine) {
+    const lineIndex = lineNumber - 1;
+    if (lineIndex < 0 || lineIndex >= document.lineCount) {
+      continue;
+    }
+    const line = document.lineAt(lineIndex);
+    decorations.push({
+      range: new vscode.Range(
+        lineIndex,
+        line.range.end.character,
+        lineIndex,
+        line.range.end.character,
+      ),
+      renderOptions: { after: { contentText: `  ${texts.join(" | ")}` } },
+    });
+  }
+  return decorations;
+};
 
 export interface CommentDecorationManager {
   update: (editor?: vscode.TextEditor) => void;
@@ -23,41 +58,9 @@ export const createCommentDecorationManager = (store: CommentStore): CommentDeco
       return;
     }
 
-    const fileName = getEditorFileName(editor);
-    const comments = store.listForFile(fileName);
-    const byLine = new Map<number, string[]>();
-
-    for (const comment of comments) {
-      const existing = byLine.get(comment.lineNumber) ?? [];
-      existing.push(comment.text);
-      byLine.set(comment.lineNumber, existing);
-    }
-
-    const decorations: vscode.DecorationOptions[] = [];
-    for (const [lineNumber, texts] of byLine) {
-      const lineIndex = lineNumber - 1;
-      if (lineIndex < 0 || lineIndex >= editor.document.lineCount) {
-        continue;
-      }
-
-      const line = editor.document.lineAt(lineIndex);
-      const contentText = `  ${texts.join(" | ")}`;
-
-      decorations.push({
-        range: new vscode.Range(
-          lineIndex,
-          line.range.end.character,
-          lineIndex,
-          line.range.end.character,
-        ),
-        renderOptions: {
-          after: {
-            contentText,
-          },
-        },
-      });
-    }
-
+    const comments = store.listForFile(getEditorFileName(editor));
+    const byLine = groupCommentsByLine(comments);
+    const decorations = createDecorationOptions(byLine, editor.document);
     editor.setDecorations(decorationType, decorations);
   };
 
