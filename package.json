@@ -15,9 +15,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onCommand:diff-comment.addComment",
-    "onCommand:diff-comment.submitComments"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
