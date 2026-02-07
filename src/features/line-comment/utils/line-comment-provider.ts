@@ -10,14 +10,14 @@ import { formatStandardComment } from "../../../utils/comment-format";
 import { CommentStore } from "../../comment-store/utils/comment-store";
 import { CommentDecorationManager } from "../../comment-decoration/utils/comment-decoration-manager";
 
-export interface LineCommentProviderDependencies {
+interface LineCommentProviderDependencies {
   showCommentInput: () => Promise<CommentInput | undefined>;
   copyToClipboard: (text: string) => Promise<boolean>;
   store: CommentStore;
   decorationManager: CommentDecorationManager;
 }
 
-export interface LineCommentProvider {
+interface LineCommentProvider {
   addComment: () => Promise<void>;
   addCommentAtLine: (lineNumber: number, fileName: string) => Promise<void>;
   submitComments: () => Promise<void>;

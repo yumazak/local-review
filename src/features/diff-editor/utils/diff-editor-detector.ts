@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export interface DiffEditorInfo {
+interface DiffEditorInfo {
   fileName: string;
   lineNumber: number;
   isDiffEditor: boolean;

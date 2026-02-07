@@ -79,7 +79,8 @@
     "prepare": "lefthook install",
     "test": "vscode-test",
     "test:unit": "pnpm run compile-tests && vscode-test --label unit",
-    "test:all": "pnpm run compile-tests && vscode-test"
+    "test:all": "pnpm run compile-tests && vscode-test",
+    "knip": "knip"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -88,6 +89,7 @@
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.3",
+    "knip": "^5.83.1",
     "lefthook": "^2.0.13",
     "oxfmt": "^0.28.0",
     "oxlint": "^1.43.0",
