@@ -1,51 +1,44 @@
 import * as vscode from "vscode";
-import { createLineCommentProvider } from "./features/comment/utils/provider";
 import { showCommentInput } from "./features/comment/utils/input";
 import { copyToClipboard } from "./features/clipboard/utils/clipboard-manager";
 import { createCommentStore } from "./features/comment/utils/store";
 import { createCommentDecorationManager } from "./features/comment/utils/decoration";
+import type { CommentContext } from "./features/comment/types/context";
+import { addComment, submitComments } from "./features/comment/utils/actions";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("Diff Comment extension is now active");
 
-  // Initialize dependencies
+  // Initialize context
   const store = createCommentStore();
   const decorationManager = createCommentDecorationManager(store);
-  const commentProvider = createLineCommentProvider({
-    showCommentInput,
-    copyToClipboard,
+
+  const ctx: CommentContext = {
     store,
     decorationManager,
-  });
+    showCommentInput,
+    copyToClipboard,
+  };
 
   // Register commands
-  const addCommentCommand = vscode.commands.registerCommand("diff-comment.addComment", async () => {
-    try {
-      await commentProvider.addComment();
-    } catch (error) {
-      vscode.window.showErrorMessage(`Failed to add comment: ${error}`);
-    }
-  });
-
-  const submitCommentsCommand = vscode.commands.registerCommand(
-    "diff-comment.submitComments",
-    async () => {
+  context.subscriptions.push(
+    vscode.commands.registerCommand("diff-comment.addComment", async () => {
       try {
-        await commentProvider.submitComments();
+        await addComment(ctx);
+      } catch (error) {
+        vscode.window.showErrorMessage(`Failed to add comment: ${error}`);
+      }
+    }),
+    vscode.commands.registerCommand("diff-comment.submitComments", async () => {
+      try {
+        await submitComments(ctx);
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to submit comments: ${error}`);
       }
-    },
-  );
-
-  const editorChangeSubscription = vscode.window.onDidChangeActiveTextEditor((editor) => {
-    decorationManager.update(editor);
-  });
-
-  context.subscriptions.push(
-    addCommentCommand,
-    submitCommentsCommand,
-    editorChangeSubscription,
+    }),
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      decorationManager.update(editor);
+    }),
     decorationManager,
   );
 }
