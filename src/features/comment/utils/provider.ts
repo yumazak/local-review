@@ -18,7 +18,7 @@ export const createLineCommentProvider = (dependencies: LineCommentProviderDepen
   const addComment = async (): Promise<void> => {
     const lineInfo = getCurrentLineInfo();
     if (!lineInfo) {
-      vscode.window.showWarningMessage("アクティブなエディタが見つかりません");
+      vscode.window.showWarningMessage("No active editor found");
       return;
     }
 
@@ -39,29 +39,29 @@ export const createLineCommentProvider = (dependencies: LineCommentProviderDepen
     const formattedComment = formatStandardComment(comment);
     const copied = await copyToClipboard(formattedComment);
     if (!copied) {
-      vscode.window.showErrorMessage("クリップボードへのコピーに失敗しました");
+      vscode.window.showErrorMessage("Failed to copy to clipboard");
       return;
     }
 
-    vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
+    vscode.window.showInformationMessage(`Comment added: ${formattedComment}`);
   };
 
   const submitComments = async (): Promise<void> => {
     if (!store.hasAny()) {
-      vscode.window.showWarningMessage("送信するコメントがありません");
+      vscode.window.showWarningMessage("No comments to submit");
       return;
     }
 
     const formattedComments = store.formatAll();
     const success = await copyToClipboard(formattedComments);
     if (!success) {
-      vscode.window.showErrorMessage("クリップボードへのコピーに失敗しました");
+      vscode.window.showErrorMessage("Failed to copy to clipboard");
       return;
     }
 
     store.clear();
     decorationManager.update(vscode.window.activeTextEditor);
-    vscode.window.showInformationMessage("コメントをまとめてコピーしました");
+    vscode.window.showInformationMessage("All comments copied to clipboard");
   };
 
   return { addComment, submitComments };

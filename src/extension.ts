@@ -8,7 +8,7 @@ import { createCommentDecorationManager } from "./features/comment/utils/decorat
 export function activate(context: vscode.ExtensionContext) {
   console.log("Diff Comment extension is now active");
 
-  // 依存関係の構築
+  // Initialize dependencies
   const store = createCommentStore();
   const decorationManager = createCommentDecorationManager(store);
   const commentProvider = createLineCommentProvider({
@@ -18,12 +18,12 @@ export function activate(context: vscode.ExtensionContext) {
     decorationManager,
   });
 
-  // コマンドの登録
+  // Register commands
   const addCommentCommand = vscode.commands.registerCommand("diff-comment.addComment", async () => {
     try {
       await commentProvider.addComment();
     } catch (error) {
-      vscode.window.showErrorMessage(`コメントの追加に失敗しました: ${error}`);
+      vscode.window.showErrorMessage(`Failed to add comment: ${error}`);
     }
   });
 
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         await commentProvider.submitComments();
       } catch (error) {
-        vscode.window.showErrorMessage(`コメントの送信に失敗しました: ${error}`);
+        vscode.window.showErrorMessage(`Failed to submit comments: ${error}`);
       }
     },
   );
@@ -51,5 +51,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  // クリーンアップ処理
+  // Cleanup
 }

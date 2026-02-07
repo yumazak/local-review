@@ -57,7 +57,7 @@
 			"type": "Live Preview",
 			"workspacePath": "/Users/yumazak/dev/personal/local-review",
 			"problemMatcher": [],
-			"label": "Live Preview: サーバーを実行する"
+			"label": "Live Preview: Start Server"
 		}
 	]
 }

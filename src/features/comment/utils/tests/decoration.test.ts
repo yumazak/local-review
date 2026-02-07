@@ -4,8 +4,8 @@ import { createCommentDecorationManager } from "../decoration";
 import { createCommentStore } from "../store";
 
 suite("CommentDecorationManager", () => {
-  // VS Code の TextEditor.setDecorations は再定義不可のため、
-  // モックでのテストが困難。実際の動作確認は E2E で行う。
+  // TextEditor.setDecorations cannot be redefined, making mock testing difficult.
+  // Verify behavior via E2E tests.
   test.skip("update renders joined comments per line", async () => {
     const store = createCommentStore();
     const manager = createCommentDecorationManager(store);
