@@ -14,7 +14,7 @@ suite("DiffEditorDetector", () => {
     const info = getCurrentLineInfo();
 
     assert.ok(info);
-    assert.strictEqual(info?.lineNumber, 2);
+    assert.strictEqual(info?.lineNumber, 1);
     assert.strictEqual(info?.isDiffEditor, false);
   });
 });

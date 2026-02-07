@@ -13,7 +13,7 @@ export const getCurrentLineInfo = (): DiffEditorInfo | null => {
   }
 
   const position = editor.selection.active;
-  const lineNumber = position.line + 1;
+  const lineNumber = position.line;
 
   return {
     fileName: getEditorFileName(editor),

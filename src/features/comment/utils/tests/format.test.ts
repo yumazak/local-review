@@ -5,7 +5,7 @@ suite("CommentFormatter", () => {
   test("formatStandard formats file, line, and text", () => {
     const formatted = formatStandardComment({
       fileName: "src/example-file.ts",
-      lineNumber: 12,
+      lineNumber: 11,
       text: "check this",
     });
 

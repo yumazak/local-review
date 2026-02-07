@@ -42,7 +42,7 @@ suite("Line Comment Flow", () => {
     const comments = store.list();
     assert.strictEqual(comments.length, 1);
     assert.strictEqual(comments[0].text, "needs check");
-    assert.strictEqual(comments[0].lineNumber, 1);
+    assert.strictEqual(comments[0].lineNumber, 0);
     assert.strictEqual(comments[0].fileName, editor.document.fileName);
     assert.strictEqual(copiedTexts.length, 1);
     assert.strictEqual(copiedTexts[0], formatStandardComment(comments[0]));
@@ -132,7 +132,7 @@ suite("Line Comment Flow", () => {
     const store = createCommentStore();
     const updates: vscode.TextEditor[] = [];
 
-    store.add({ fileName: "test.ts", lineNumber: 1, text: "comment" });
+    store.add({ fileName: "test.ts", lineNumber: 0, text: "comment" });
 
     const ctx: CommentContext = {
       showCommentInput: async () => "test",

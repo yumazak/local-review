@@ -17,10 +17,10 @@ suite("CommentDecorationManager", () => {
     const captured: vscode.DecorationOptions[] = [];
 
     const fileName = document.fileName;
-    store.add({ fileName, lineNumber: 1, text: "a" });
-    store.add({ fileName, lineNumber: 1, text: "b" });
-    store.add({ fileName, lineNumber: 2, text: "c" });
-    store.add({ fileName, lineNumber: 99, text: "out" });
+    store.add({ fileName, lineNumber: 0, text: "a" });
+    store.add({ fileName, lineNumber: 0, text: "b" });
+    store.add({ fileName, lineNumber: 1, text: "c" });
+    store.add({ fileName, lineNumber: 98, text: "out" });
 
     manager.update(editor);
 

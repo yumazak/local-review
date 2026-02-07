@@ -3,23 +3,21 @@ import { Comment } from "../types/comment";
 import { CommentStore } from "./store";
 import { getEditorFileName } from "../../editor/utils/detector";
 
-const groupCommentsByLine = (comments: Comment[]): Map<number, string[]> => {
-  const byLine = new Map<number, string[]>();
-  for (const comment of comments) {
-    const existing = byLine.get(comment.lineNumber) ?? [];
-    existing.push(comment.text);
-    byLine.set(comment.lineNumber, existing);
-  }
-  return byLine;
+const COMMENT_DECORATION_STYLE: vscode.DecorationRenderOptions["after"] = {
+  margin: "0 0 0 1.2em",
+  color: "#1f1f1f",
+  backgroundColor: "rgba(255, 236, 150, 0.95)",
+  border: "1px solid rgba(180, 150, 60, 0.95)",
+  fontStyle: "normal",
 };
 
 const createDecorationOptions = (
-  byLine: Map<number, string[]>,
+  comments: Comment[],
   document: vscode.TextDocument,
 ): vscode.DecorationOptions[] => {
   const decorations: vscode.DecorationOptions[] = [];
-  for (const [lineNumber, texts] of byLine) {
-    const lineIndex = lineNumber - 1;
+  for (const comment of comments) {
+    const lineIndex = comment.lineNumber;
     if (lineIndex < 0 || lineIndex >= document.lineCount) {
       continue;
     }
@@ -31,7 +29,7 @@ const createDecorationOptions = (
         lineIndex,
         line.range.end.character,
       ),
-      renderOptions: { after: { contentText: `  ${texts.join(" | ")}` } },
+      renderOptions: { after: { contentText: `  ${comment.text}` } },
     });
   }
   return decorations;
@@ -44,13 +42,7 @@ export interface CommentDecorationManager {
 
 export const createCommentDecorationManager = (store: CommentStore): CommentDecorationManager => {
   const decorationType = vscode.window.createTextEditorDecorationType({
-    after: {
-      margin: "0 0 0 1.2em",
-      color: "#1f1f1f",
-      backgroundColor: "rgba(255, 236, 150, 0.95)",
-      border: "1px solid rgba(180, 150, 60, 0.95)",
-      fontStyle: "normal",
-    },
+    after: COMMENT_DECORATION_STYLE,
   });
 
   const update = (editor?: vscode.TextEditor): void => {
@@ -59,8 +51,7 @@ export const createCommentDecorationManager = (store: CommentStore): CommentDeco
     }
 
     const comments = store.listForFile(getEditorFileName(editor));
-    const byLine = groupCommentsByLine(comments);
-    const decorations = createDecorationOptions(byLine, editor.document);
+    const decorations = createDecorationOptions(comments, editor.document);
     editor.setDecorations(decorationType, decorations);
   };
 
