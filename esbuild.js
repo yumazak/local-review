@@ -17,8 +17,9 @@ async function main() {
     logLevel: 'silent',
   });
   if (watch) {
+    console.log('[watch] build started');
     await ctx.watch();
-    console.log('watching...');
+    console.log('[watch] build finished');
   } else {
     await ctx.rebuild();
     await ctx.dispose();
