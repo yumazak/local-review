@@ -1,5 +1,5 @@
-import { Comment } from '../../../types/comment';
-import { formatStandardComment } from '../../../utils/comment-format';
+import { Comment } from "../../../types/comment";
+import { formatStandardComment } from "../../../utils/comment-format";
 
 export interface CommentStore {
   add: (comment: Comment) => void;
@@ -26,7 +26,7 @@ export const createCommentStore = (): CommentStore => {
   };
 
   const formatAll = (): string => {
-    return comments.map((comment) => formatStandardComment(comment)).join('\n');
+    return comments.map((comment) => formatStandardComment(comment)).join("\n");
   };
 
   const clear = (): void => {
@@ -43,6 +43,6 @@ export const createCommentStore = (): CommentStore => {
     listForFile,
     formatAll,
     clear,
-    hasAny
+    hasAny,
   };
 };

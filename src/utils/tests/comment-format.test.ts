@@ -1,15 +1,15 @@
-import * as assert from 'assert';
-import { formatStandardComment } from '../comment-format';
+import * as assert from "assert";
+import { formatStandardComment } from "../comment-format";
 
-suite('CommentFormatter', () => {
-  test('formatStandard formats file, line, and text', () => {
+suite("CommentFormatter", () => {
+  test("formatStandard formats file, line, and text", () => {
     const formatted = formatStandardComment({
-      fileName: 'src/example-file.ts',
+      fileName: "src/example-file.ts",
       lineNumber: 12,
-      text: 'check this',
-      timestamp: new Date()
+      text: "check this",
+      timestamp: new Date(),
     });
 
-    assert.strictEqual(formatted, 'src/example-file.ts:12 check this');
+    assert.strictEqual(formatted, "src/example-file.ts:12 check this");
   });
 });

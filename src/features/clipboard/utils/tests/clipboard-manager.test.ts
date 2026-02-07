@@ -1,8 +1,8 @@
-import * as assert from 'assert';
-import { copyToClipboard, readFromClipboard } from '../clipboard-manager';
+import * as assert from "assert";
+import { copyToClipboard, readFromClipboard } from "../clipboard-manager";
 
-suite('ClipboardManager', () => {
-  test('copyToClipboard writes text that can be read back', async () => {
+suite("ClipboardManager", () => {
+  test("copyToClipboard writes text that can be read back", async () => {
     const value = `diff-comment-${Date.now()}`;
 
     const copied = await copyToClipboard(value);

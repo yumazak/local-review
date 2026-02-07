@@ -1,4 +1,4 @@
-import { showCommentInput as showQuickInput } from '../../../ui/quick-input-builder';
+import { showCommentInput as showQuickInput } from "../../../ui/quick-input-builder";
 
 export interface CommentInput {
   text: string;
@@ -14,6 +14,6 @@ export const showCommentInput = async (): Promise<CommentInput | undefined> => {
 
   return {
     text: text.trim(),
-    timestamp: new Date()
+    timestamp: new Date(),
   };
 };

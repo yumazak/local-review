@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export interface DiffEditorInfo {
   fileName: string;
@@ -18,7 +18,7 @@ export const getCurrentLineInfo = (): DiffEditorInfo | null => {
   return {
     fileName: getEditorFileName(editor),
     lineNumber,
-    isDiffEditor: isDiffEditor(editor)
+    isDiffEditor: isDiffEditor(editor),
   };
 };
 
@@ -42,5 +42,5 @@ export const getEditorFileName = (editor: vscode.TextEditor): string => {
 export const isDiffEditor = (editor: vscode.TextEditor): boolean => {
   const scheme = editor.document.uri.scheme;
   // git や diff スキームの場合は diff エディタ
-  return scheme === 'git' || scheme === 'diff';
+  return scheme === "git" || scheme === "diff";
 };

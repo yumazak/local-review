@@ -7,9 +7,7 @@ export interface CommentDecorationManager {
   dispose: () => void;
 }
 
-export const createCommentDecorationManager = (
-  store: CommentStore
-): CommentDecorationManager => {
+export const createCommentDecorationManager = (store: CommentStore): CommentDecorationManager => {
   const decorationType = vscode.window.createTextEditorDecorationType({
     after: {
       margin: "0 0 0 1.2em",
@@ -50,7 +48,7 @@ export const createCommentDecorationManager = (
           lineIndex,
           line.range.end.character,
           lineIndex,
-          line.range.end.character
+          line.range.end.character,
         ),
         renderOptions: {
           after: {

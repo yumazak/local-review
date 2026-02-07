@@ -1,13 +1,15 @@
-import * as assert from 'assert';
-import * as vscode from 'vscode';
-import { showCommentInput } from '../comment-input-handler';
+import * as assert from "assert";
+import * as vscode from "vscode";
+import { showCommentInput } from "../comment-input-handler";
 
-suite('CommentInputHandler', () => {
-  test('returns trimmed input with timestamp', async () => {
+suite("CommentInputHandler", () => {
+  test("returns trimmed input with timestamp", async () => {
     const original = vscode.window.showInputBox;
-    (vscode.window as unknown as {
-      showInputBox: typeof vscode.window.showInputBox;
-    }).showInputBox = async () => '  hello  ';
+    (
+      vscode.window as unknown as {
+        showInputBox: typeof vscode.window.showInputBox;
+      }
+    ).showInputBox = async () => "  hello  ";
 
     try {
       const before = Date.now();
@@ -15,29 +17,35 @@ suite('CommentInputHandler', () => {
       const after = Date.now();
 
       assert.ok(result);
-      assert.strictEqual(result?.text, 'hello');
+      assert.strictEqual(result?.text, "hello");
       assert.ok(result?.timestamp.getTime() >= before);
       assert.ok(result?.timestamp.getTime() <= after);
     } finally {
-      (vscode.window as unknown as {
-        showInputBox: typeof vscode.window.showInputBox;
-      }).showInputBox = original;
+      (
+        vscode.window as unknown as {
+          showInputBox: typeof vscode.window.showInputBox;
+        }
+      ).showInputBox = original;
     }
   });
 
-  test('returns undefined when input is cancelled', async () => {
+  test("returns undefined when input is cancelled", async () => {
     const original = vscode.window.showInputBox;
-    (vscode.window as unknown as {
-      showInputBox: typeof vscode.window.showInputBox;
-    }).showInputBox = async () => undefined;
+    (
+      vscode.window as unknown as {
+        showInputBox: typeof vscode.window.showInputBox;
+      }
+    ).showInputBox = async () => undefined;
 
     try {
       const result = await showCommentInput();
       assert.strictEqual(result, undefined);
     } finally {
-      (vscode.window as unknown as {
-        showInputBox: typeof vscode.window.showInputBox;
-      }).showInputBox = original;
+      (
+        vscode.window as unknown as {
+          showInputBox: typeof vscode.window.showInputBox;
+        }
+      ).showInputBox = original;
     }
   });
 });
