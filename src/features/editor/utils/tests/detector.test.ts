@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { getCurrentLineInfo } from "../diff-editor-detector";
+import { getCurrentLineInfo } from "../detector";
 
 suite("DiffEditorDetector", () => {
   test("getCurrentLineInfo returns line info for active editor", async () => {

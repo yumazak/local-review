@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { showCommentInput } from "../comment-input-handler";
+import { showCommentInput } from "../input";
 
 suite("CommentInputHandler", () => {
   test("returns trimmed input with timestamp", async () => {

@@ -1,6 +1,11 @@
 import * as vscode from "vscode";
 
-export const showCommentInput = async (): Promise<string | undefined> => {
+export interface CommentInput {
+  text: string;
+  timestamp: Date;
+}
+
+const showQuickInput = async (): Promise<string | undefined> => {
   const result = await vscode.window.showInputBox({
     prompt: "行にコメントを追加",
     placeHolder: "コメントを入力してください...",
@@ -13,4 +18,17 @@ export const showCommentInput = async (): Promise<string | undefined> => {
   });
 
   return result;
+};
+
+export const showCommentInput = async (): Promise<CommentInput | undefined> => {
+  const text = await showQuickInput();
+
+  if (!text) {
+    return undefined;
+  }
+
+  return {
+    text: text.trim(),
+    timestamp: new Date(),
+  };
 };

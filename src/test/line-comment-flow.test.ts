@@ -1,9 +1,9 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { createLineCommentProvider } from "../features/line-comment/utils/line-comment-provider";
-import { createCommentStore } from "../features/comment-store/utils/comment-store";
-import { CommentDecorationManager } from "../features/comment-decoration/utils/comment-decoration-manager";
-import { formatStandardComment } from "../utils/comment-format";
+import { createLineCommentProvider } from "../features/comment/utils/provider";
+import { createCommentStore } from "../features/comment/utils/store";
+import { CommentDecorationManager } from "../features/comment/utils/decoration";
+import { formatStandardComment } from "../features/comment/utils/format";
 
 suite("Line Comment Flow", () => {
   test("add comment then submit copies and clears", async () => {

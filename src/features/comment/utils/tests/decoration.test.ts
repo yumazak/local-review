@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { createCommentDecorationManager } from "../comment-decoration-manager";
-import { createCommentStore } from "../../../comment-store/utils/comment-store";
+import { createCommentDecorationManager } from "../decoration";
+import { createCommentStore } from "../store";
 
 suite("CommentDecorationManager", () => {
   // VS Code の TextEditor.setDecorations は再定義不可のため、

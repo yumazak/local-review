@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { CommentStore } from "../../comment-store/utils/comment-store";
-import { getEditorFileName } from "../../diff-editor/utils/diff-editor-detector";
+import { CommentStore } from "./store";
+import { getEditorFileName } from "../../editor/utils/detector";
 
 export interface CommentDecorationManager {
   update: (editor?: vscode.TextEditor) => void;
