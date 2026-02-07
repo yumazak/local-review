@@ -36,6 +36,6 @@ src/extension.ts:42 check the initialization
 ## 開発
 
 ```bash
-npm run compile
-npm test
+pnpm run compile
+pnpm test
 ```

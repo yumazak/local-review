@@ -24,21 +24,36 @@ export const createLineCommentProvider = (
 ): LineCommentProvider => {
   const { showCommentInput, copyToClipboard, store, decorationManager } = dependencies;
 
+  const saveAndNotify = async (
+    comment: Comment,
+    editor: vscode.TextEditor | undefined,
+  ): Promise<void> => {
+    const formattedComment = formatStandardComment(comment);
+
+    store.add(comment);
+    decorationManager.update(editor);
+
+    const copied = await copyToClipboard(formattedComment);
+    if (!copied) {
+      vscode.window.showErrorMessage("クリップボードへのコピーに失敗しました");
+      return;
+    }
+
+    vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
+  };
+
   const addComment = async (): Promise<void> => {
-    // 1. エディタ情報取得
     const lineInfo = getCurrentLineInfo();
     if (!lineInfo) {
       vscode.window.showWarningMessage("アクティブなエディタが見つかりません");
       return;
     }
 
-    // 2. コメント入力
     const commentInput = await showCommentInput();
     if (!commentInput) {
-      return; // ユーザーがキャンセル
+      return;
     }
 
-    // 3. フォーマット
     const comment: Comment = {
       fileName: lineInfo.fileName,
       lineNumber: lineInfo.lineNumber,
@@ -46,18 +61,7 @@ export const createLineCommentProvider = (
       timestamp: commentInput.timestamp,
     };
 
-    const formattedComment = formatStandardComment(comment);
-
-    // 4. 内部に保持して表示を更新
-    store.add(comment);
-    decorationManager.update(vscode.window.activeTextEditor);
-
-    const copied = await copyToClipboard(formattedComment);
-    if (!copied) {
-      vscode.window.showErrorMessage("クリップボードへのコピーに失敗しました");
-    }
-
-    vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
+    await saveAndNotify(comment, vscode.window.activeTextEditor);
   };
 
   const addCommentAtLine = async (lineNumber: number, fileName: string): Promise<void> => {
@@ -99,17 +103,7 @@ export const createLineCommentProvider = (
       timestamp: commentInput.timestamp,
     };
 
-    const formattedComment = formatStandardComment(comment);
-
-    store.add(comment);
-    decorationManager.update(editor);
-
-    const copied = await copyToClipboard(formattedComment);
-    if (!copied) {
-      vscode.window.showErrorMessage("クリップボードへのコピーに失敗しました");
-    }
-
-    vscode.window.showInformationMessage(`コメントを追加しました: ${formattedComment}`);
+    await saveAndNotify(comment, editor);
   };
 
   const submitComments = async (): Promise<void> => {
