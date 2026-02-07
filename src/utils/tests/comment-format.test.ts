@@ -1,8 +1,8 @@
-import * as assert from 'assert';
+import { describe, it, expect } from 'vitest';
 import { formatStandardComment } from '../comment-format';
 
-suite('CommentFormatter', () => {
-  test('formatStandard formats file, line, and text', () => {
+describe('CommentFormatter', () => {
+  it('formatStandard formats file, line, and text', () => {
     const formatted = formatStandardComment({
       fileName: 'src/example-file.ts',
       lineNumber: 12,
@@ -10,6 +10,6 @@ suite('CommentFormatter', () => {
       timestamp: new Date()
     });
 
-    assert.strictEqual(formatted, 'src/example-file.ts:12 check this');
+    expect(formatted).toBe('src/example-file.ts:12 check this');
   });
 });

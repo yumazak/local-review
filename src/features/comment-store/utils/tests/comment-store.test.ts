@@ -1,8 +1,8 @@
-import * as assert from 'assert';
+import { describe, it, expect } from 'vitest';
 import { createCommentStore } from '../comment-store';
 
-suite('CommentStore', () => {
-  test('formatAll joins comments by newline', () => {
+describe('CommentStore', () => {
+  it('formatAll joins comments by newline', () => {
     const store = createCommentStore();
     store.add({
       fileName: 'src/a.ts',
@@ -17,6 +17,6 @@ suite('CommentStore', () => {
       timestamp: new Date()
     });
 
-    assert.strictEqual(store.formatAll(), 'src/a.ts:1 first\nsrc/b.ts:2 second');
+    expect(store.formatAll()).toBe('src/a.ts:1 first\nsrc/b.ts:2 second');
   });
 });

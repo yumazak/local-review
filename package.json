@@ -63,18 +63,21 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "package:install": "npm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
+    "vscode:prepublish": "pnpm run package",
+    "compile": "vite build",
+    "watch": "vite build --watch",
+    "package": "vite build --mode production",
+    "package:install": "pnpm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
     "package:vsix": "vsce package",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "lint": "eslint src",
     "prepare": "lefthook install",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:all": "pnpm run test:unit && pnpm run test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -84,10 +87,9 @@
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.1",
     "lefthook": "^2.0.13",
-    "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1",
-    "webpack": "^5.103.0",
-    "webpack-cli": "^6.0.1"
+    "vite": "^6.0.0",
+    "vitest": "^2.0.0"
   }
 }
