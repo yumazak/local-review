@@ -1,5 +1,12 @@
 import { defineConfig } from '@vscode/test-cli';
 
-export default defineConfig({
-	files: 'out/test/**/*.test.js',
-});
+export default defineConfig([
+  {
+    label: 'unit',
+    files: 'out/**/tests/**/*.test.js',
+  },
+  {
+    label: 'e2e',
+    files: 'out/test/**/*.test.js',
+  }
+]);

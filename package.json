@@ -64,9 +64,9 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
-    "compile": "vite build",
-    "watch": "vite build --watch",
-    "package": "vite build --mode production",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "node esbuild.js --production",
     "package:install": "pnpm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
     "package:vsix": "vsce package",
     "compile-tests": "tsc -p . --outDir out",
@@ -75,21 +75,19 @@
     "lint": "eslint src",
     "prepare": "lefthook install",
     "test": "vscode-test",
-    "test:unit": "vitest run",
-    "test:unit:watch": "vitest",
-    "test:all": "pnpm run test:unit && pnpm run test"
+    "test:unit": "pnpm run compile-tests && vscode-test --label unit",
+    "test:all": "pnpm run compile-tests && vscode-test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
-    "@types/vscode": "^1.107.0",
+    "@types/node": "25.2.1",
+    "@types/vscode": "^1.109.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
-    "eslint": "^9.39.1",
+    "esbuild": "^0.27.3",
+    "eslint": "10.0.0",
     "lefthook": "^2.0.13",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1",
-    "vite": "^6.0.0",
-    "vitest": "^2.0.0"
+    "typescript-eslint": "^8.54.0"
   }
 }
