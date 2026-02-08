@@ -28,6 +28,11 @@
           "type": "boolean",
           "default": false,
           "description": "Use absolute file paths instead of relative paths in comments"
+        },
+        "localReview.copyOnComment": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically copy comment to clipboard when adding a new comment"
         }
       }
     },

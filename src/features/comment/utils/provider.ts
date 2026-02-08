@@ -114,11 +114,18 @@ export const createCommentProvider = (
     fileThreads.push(thread);
     threads.set(key, fileThreads);
 
-    // クリップボードにコピー
-    const formattedComment = formatStandardComment(comment);
-    const copied = await copyToClipboard(formattedComment);
-    if (copied) {
-      vscode.window.showInformationMessage(`Comment added: ${formattedComment}`);
+    // 設定に基づきクリップボードにコピー
+    const config = vscode.workspace.getConfiguration("localReview");
+    const copyOnComment = config.get<boolean>("copyOnComment", true);
+
+    if (copyOnComment) {
+      const formattedComment = formatStandardComment(comment);
+      const copied = await copyToClipboard(formattedComment);
+      if (copied) {
+        vscode.window.showInformationMessage(`Comment added: ${formattedComment}`);
+      }
+    } else {
+      vscode.window.showInformationMessage("Comment added");
     }
   };
 
