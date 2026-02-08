@@ -69,7 +69,6 @@
     "package": "node esbuild.js --production",
     "package:install": "pnpm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
     "package:vsix": "vsce package",
-    "publish": "pnpm run package && vsce publish",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
@@ -86,7 +85,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "25.2.1",
-    "@types/vscode": "^1.109.0",
+    "@types/vscode": "^1.108.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.7.1",
