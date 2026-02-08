@@ -122,10 +122,8 @@ export const createCommentProvider = (
       const formattedComment = formatStandardComment(comment);
       const copied = await copyToClipboard(formattedComment);
       if (copied) {
-        vscode.window.showInformationMessage(`Comment added: ${formattedComment}`);
+        vscode.window.showInformationMessage("Copied to clipboard");
       }
-    } else {
-      vscode.window.showInformationMessage("Comment added");
     }
   };
 
