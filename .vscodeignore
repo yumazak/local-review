@@ -16,3 +16,5 @@ lefthook.yml
 knip.json
 esbuild.js
 CHANGELOG.md
+images/**
+CLAUDE.local.md

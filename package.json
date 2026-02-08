@@ -2,7 +2,7 @@
   "name": "local-review",
   "displayName": "Local Review",
   "description": "Add comments to diff editor lines and copy to clipboard",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "yumazak",
   "license": "MIT",
   "repository": {
@@ -12,7 +12,7 @@
   "engines": {
     "vscode": "^1.108.0"
   },
-  "icon": "aseets/icon.png",
+  "icon": "assets/icon.png",
   "categories": [
     "Other"
   ],

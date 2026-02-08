@@ -1,8 +1,12 @@
 # Local Review
 
+![Local Review](https://raw.githubusercontent.com/yumazak/local-review/main/images/screenshot.png)
+
 A VS Code extension for quickly collecting code review comments and sharing them with AI Agents like Claude Code, GitHub Copilot, or other AI assistants.
 
 ## Why Local Review?
+
+![Usage Demo](https://raw.githubusercontent.com/yumazak/local-review/main/images/demo.gif)
 
 When reviewing code with AI Agents, you often need to:
 1. Point out specific lines that need attention
