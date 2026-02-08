@@ -5,6 +5,7 @@ export interface CommentStore {
   add: (comment: Comment) => void;
   list: () => Comment[];
   listForFile: (fileName: string) => Comment[];
+  removeAt: (fileName: string, lineNumber: number) => void;
   formatAll: () => string;
   clear: () => void;
   hasAny: () => boolean;
@@ -25,6 +26,12 @@ export const createCommentStore = (): CommentStore => {
     return comments.filter((comment) => comment.fileName === fileName);
   };
 
+  const removeAt = (fileName: string, lineNumber: number): void => {
+    comments = comments.filter(
+      (comment) => !(comment.fileName === fileName && comment.lineNumber === lineNumber),
+    );
+  };
+
   const formatAll = (): string => {
     return comments.map((comment) => formatStandardComment(comment)).join("\n");
   };
@@ -41,6 +48,7 @@ export const createCommentStore = (): CommentStore => {
     add,
     list,
     listForFile,
+    removeAt,
     formatAll,
     clear,
     hasAny,

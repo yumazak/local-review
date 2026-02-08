@@ -2,7 +2,7 @@
   "name": "local-review",
   "displayName": "Local Review",
   "description": "Add comments to diff editor lines and copy to clipboard",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "yumazak",
   "license": "MIT",
   "repository": {
@@ -31,6 +31,11 @@
         "command": "local-review.submitComments",
         "title": "Copy All Comments",
         "category": "Local Review"
+      },
+      {
+        "command": "localReview.deleteComment",
+        "title": "Delete",
+        "icon": "$(trash)"
       }
     ],
     "keybindings": [
@@ -58,6 +63,13 @@
           "command": "local-review.submitComments",
           "group": "9_cutcopypaste",
           "when": "editorTextFocus"
+        }
+      ],
+      "comments/commentThread/title": [
+        {
+          "command": "localReview.deleteComment",
+          "group": "inline",
+          "when": "commentController == localReview && commentThread =~ /localReviewThread/"
         }
       ]
     }

@@ -1,20 +1,19 @@
 import * as vscode from "vscode";
 
-export const showCommentInput = async (): Promise<string | undefined> => {
-  const result = await vscode.window.showInputBox({
-    prompt: "Add comment to line",
-    placeHolder: "Enter your comment...",
-    validateInput: (value: string) => {
-      if (!value || value.trim().length === 0) {
-        return "Please enter a comment";
-      }
-      return null;
-    },
+export interface CommentInputResult {
+  text: string;
+}
+
+export const showCommentInput = async (): Promise<CommentInputResult | undefined> => {
+  const text = await vscode.window.showInputBox({
+    prompt: "Enter your review comment",
+    placeHolder: "Type your comment here...",
+    ignoreFocusOut: true,
   });
 
-  if (!result) {
+  if (!text?.trim()) {
     return undefined;
   }
 
-  return result.trim();
+  return { text: text.trim() };
 };

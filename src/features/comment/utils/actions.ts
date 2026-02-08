@@ -1,38 +1,21 @@
 import * as vscode from "vscode";
 import type { CommentAction } from "../types/context";
-import type { Comment } from "../types/comment";
 import { getCurrentLineInfo } from "../../editor/utils/detector";
-import { formatStandardComment } from "./format";
 
 export const addComment: CommentAction = async (ctx) => {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showWarningMessage("No active editor found");
+    return;
+  }
+
   const lineInfo = getCurrentLineInfo();
   if (!lineInfo) {
     vscode.window.showWarningMessage("No active editor found");
     return;
   }
 
-  const text = await ctx.showCommentInput();
-  if (!text) {
-    return;
-  }
-
-  const comment: Comment = {
-    fileName: lineInfo.fileName,
-    lineNumber: lineInfo.lineNumber,
-    text,
-  };
-
-  ctx.store.add(comment);
-  ctx.decorationManager.update(vscode.window.activeTextEditor);
-
-  const formattedComment = formatStandardComment(comment);
-  const copied = await ctx.copyToClipboard(formattedComment);
-  if (!copied) {
-    vscode.window.showErrorMessage("Failed to copy to clipboard");
-    return;
-  }
-
-  vscode.window.showInformationMessage(`Comment added: ${formattedComment}`);
+  await ctx.commentProvider.startCommentAtLine(editor.document.uri, lineInfo.lineNumber);
 };
 
 export const submitComments: CommentAction = async (ctx) => {
@@ -49,6 +32,6 @@ export const submitComments: CommentAction = async (ctx) => {
   }
 
   ctx.store.clear();
-  ctx.decorationManager.update(vscode.window.activeTextEditor);
+  ctx.commentProvider.clearAllThreads();
   vscode.window.showInformationMessage("All comments copied to clipboard");
 };

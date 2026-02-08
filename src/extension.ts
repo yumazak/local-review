@@ -1,26 +1,24 @@
 import * as vscode from "vscode";
-import { showCommentInput } from "./features/comment/utils/input";
 import { copyToClipboard } from "./features/clipboard/utils/clipboard-manager";
 import { createCommentStore } from "./features/comment/utils/store";
-import { createCommentDecorationManager } from "./features/comment/utils/decoration";
+import { createCommentProvider } from "./features/comment/utils/provider";
+import { showCommentInput } from "./features/comment/utils/input";
 import type { CommentContext } from "./features/comment/types/context";
 import { addComment, submitComments } from "./features/comment/utils/actions";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("Local Review extension is now active");
 
-  // Initialize context
   const store = createCommentStore();
-  const decorationManager = createCommentDecorationManager(store);
+  const commentProvider = createCommentProvider(store, context, showCommentInput, copyToClipboard);
 
   const ctx: CommentContext = {
     store,
-    decorationManager,
+    commentProvider,
     showCommentInput,
     copyToClipboard,
   };
 
-  // Register commands
   context.subscriptions.push(
     vscode.commands.registerCommand("local-review.addComment", async () => {
       try {
@@ -37,9 +35,9 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }),
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      decorationManager.update(editor);
+      commentProvider.refreshForEditor(editor);
     }),
-    decorationManager,
+    { dispose: () => commentProvider.dispose() },
   );
 }
 
