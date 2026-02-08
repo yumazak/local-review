@@ -21,6 +21,16 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Local Review",
+      "properties": {
+        "localReview.useAbsolutePath": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use absolute file paths instead of relative paths in comments"
+        }
+      }
+    },
     "commands": [
       {
         "command": "local-review.addComment",

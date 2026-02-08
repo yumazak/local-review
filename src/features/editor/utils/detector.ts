@@ -24,6 +24,19 @@ export const getCurrentLineInfo = (): DiffEditorInfo | null => {
 
 export const getEditorFileName = (editor: vscode.TextEditor): string => {
   const uri = editor.document.uri;
+  const config = vscode.workspace.getConfiguration("localReview");
+  const useAbsolutePath = config.get<boolean>("useAbsolutePath", false);
+
+  if (useAbsolutePath) {
+    if (uri.scheme === "file") {
+      return uri.fsPath;
+    }
+    // git/diff スキームの場合は uri.path から絶対パスを取得
+    if ((uri.scheme === "git" || uri.scheme === "diff") && uri.path) {
+      return vscode.Uri.file(uri.path).fsPath;
+    }
+  }
+
   const isDiffScheme = isDiffEditor(editor);
 
   if (isDiffScheme && uri.path) {

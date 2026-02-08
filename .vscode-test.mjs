@@ -8,5 +8,6 @@ export default defineConfig([
   {
     label: 'e2e',
     files: 'out/test/**/*.test.js',
+    workspaceFolder: '.',
   }
 ]);
