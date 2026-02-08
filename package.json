@@ -2,7 +2,7 @@
   "name": "local-review",
   "displayName": "Local Review",
   "description": "Add comments to diff editor lines and copy to clipboard",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "yumazak",
   "license": "MIT",
   "repository": {
