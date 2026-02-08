@@ -3,7 +3,7 @@ import { copyToClipboard, readFromClipboard } from "../clipboard-manager";
 
 suite("ClipboardManager", () => {
   test("copyToClipboard writes text that can be read back", async () => {
-    const value = `diff-comment-${Date.now()}`;
+    const value = `local-review-${Date.now()}`;
 
     const copied = await copyToClipboard(value);
     const read = await readFromClipboard();

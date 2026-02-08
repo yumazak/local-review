@@ -7,7 +7,7 @@ import type { CommentContext } from "./features/comment/types/context";
 import { addComment, submitComments } from "./features/comment/utils/actions";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("Diff Comment extension is now active");
+  console.log("Local Review extension is now active");
 
   // Initialize context
   const store = createCommentStore();
@@ -22,14 +22,14 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Register commands
   context.subscriptions.push(
-    vscode.commands.registerCommand("diff-comment.addComment", async () => {
+    vscode.commands.registerCommand("local-review.addComment", async () => {
       try {
         await addComment(ctx);
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to add comment: ${error}`);
       }
     }),
-    vscode.commands.registerCommand("diff-comment.submitComments", async () => {
+    vscode.commands.registerCommand("local-review.submitComments", async () => {
       try {
         await submitComments(ctx);
       } catch (error) {

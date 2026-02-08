@@ -1,4 +1,4 @@
-# Diff Comment
+# Local Review
 
 Add line comments in VS Code, display them at line endings, and copy all at once.
 
@@ -13,12 +13,12 @@ Add line comments in VS Code, display them at line endings, and copy all at once
 
 1. Open a file or diff view and place cursor on the line you want to comment
 2. Run the command:
-   - Command Palette: `Diff Comment: Add Comment to Current Line`
+   - Command Palette: `Local Review: Add Comment to Current Line`
    - Shortcut: `Ctrl+Shift+C` (macOS: `Cmd+Shift+C`)
 3. Enter your comment and press Enter
 4. The comment appears at the end of the line
 5. To copy all comments:
-   - Command Palette: `Diff Comment: Copy All Comments`
+   - Command Palette: `Local Review: Copy All Comments`
    - Editor context menu: `Copy All Comments`
    - Shortcut: `Ctrl+Shift+Enter` (macOS: `Cmd+Shift+Enter`)
 6. After copying, saved comments are cleared

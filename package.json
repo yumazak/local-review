@@ -1,16 +1,18 @@
 {
-  "name": "diff-comment",
-  "displayName": "Diff Comment",
+  "name": "local-review",
+  "displayName": "Local Review",
   "description": "Add comments to diff editor lines and copy to clipboard",
   "version": "0.0.1",
+  "publisher": "yumazak",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/yumazak/local-review"
   },
   "engines": {
-    "vscode": "^1.107.0"
+    "vscode": "^1.109.0"
   },
+  "icon": "aseets/icon.png",
   "categories": [
     "Other"
   ],
@@ -21,25 +23,25 @@
   "contributes": {
     "commands": [
       {
-        "command": "diff-comment.addComment",
+        "command": "local-review.addComment",
         "title": "Add Comment to Current Line",
-        "category": "Diff Comment"
+        "category": "Local Review"
       },
       {
-        "command": "diff-comment.submitComments",
+        "command": "local-review.submitComments",
         "title": "Copy All Comments",
-        "category": "Diff Comment"
+        "category": "Local Review"
       }
     ],
     "keybindings": [
       {
-        "command": "diff-comment.addComment",
+        "command": "local-review.addComment",
         "key": "ctrl+shift+c",
         "mac": "cmd+shift+c",
         "when": "editorTextFocus"
       },
       {
-        "command": "diff-comment.submitComments",
+        "command": "local-review.submitComments",
         "key": "ctrl+shift+enter",
         "mac": "cmd+shift+enter",
         "when": "editorTextFocus"
@@ -48,12 +50,12 @@
     "menus": {
       "editor/context": [
         {
-          "command": "diff-comment.addComment",
+          "command": "local-review.addComment",
           "group": "9_cutcopypaste",
           "when": "editorTextFocus"
         },
         {
-          "command": "diff-comment.submitComments",
+          "command": "local-review.submitComments",
           "group": "9_cutcopypaste",
           "when": "editorTextFocus"
         }
@@ -86,6 +88,7 @@
     "@types/vscode": "^1.109.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.27.3",
     "knip": "^5.83.1",
     "lefthook": "^2.0.13",
