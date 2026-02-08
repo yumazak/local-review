@@ -71,6 +71,23 @@ src/utils/parser.ts:15 this logic seems duplicated
 | Local Review: Add Comment to Current Line | `Cmd+Shift+C` | Add a comment to the current line |
 | Local Review: Copy All Comments | `Cmd+Shift+Enter` | Copy all comments and clear |
 
+## Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `localReview.useAbsolutePath` | `false` | Use absolute file paths instead of relative paths in comments |
+| `localReview.copyOnComment` | `true` | Automatically copy comment to clipboard when adding a new comment |
+
+### Example Configuration
+
+```json
+// .vscode/settings.json
+{
+  "localReview.useAbsolutePath": true,
+  "localReview.copyOnComment": false
+}
+```
+
 ## Requirements
 
 - Visual Studio Code 1.108.0 or higher
