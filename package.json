@@ -69,6 +69,7 @@
     "package": "node esbuild.js --production",
     "package:install": "pnpm run package:vsix && code --install-extension $(ls -t *.vsix | head -n 1)",
     "package:vsix": "vsce package",
+    "publish": "pnpm run package && vsce publish",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
