@@ -60,7 +60,6 @@ export const createCommentProvider = (
     }
   };
 
-  // コメント削除コマンド
   const deleteCommentCommand = vscode.commands.registerCommand(
     "localReview.deleteComment",
     (thread: vscode.CommentThread) => {
@@ -98,7 +97,6 @@ export const createCommentProvider = (
 
     store.add(comment);
 
-    // CommentThread を作成して表示
     const range = new vscode.Range(line, 0, line, 0);
     const thread = commentController.createCommentThread(uri, range, []);
 
@@ -114,7 +112,6 @@ export const createCommentProvider = (
     fileThreads.push(thread);
     threads.set(key, fileThreads);
 
-    // 設定に基づきクリップボードにコピー
     const config = vscode.workspace.getConfiguration("localReview");
     const copyOnComment = config.get<boolean>("copyOnComment", true);
 

@@ -31,7 +31,6 @@ export const getEditorFileName = (editor: vscode.TextEditor): string => {
     if (uri.scheme === "file") {
       return uri.fsPath;
     }
-    // git/diff スキームの場合は uri.path から絶対パスを取得
     if ((uri.scheme === "git" || uri.scheme === "diff") && uri.path) {
       return vscode.Uri.file(uri.path).fsPath;
     }
